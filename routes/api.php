@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +16,13 @@ use Illuminate\Http\Request;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::group(['prefix' => '/v1/pay/'], function () {
+    Route::post('subscription', 'PaymentController@basicPayment');
+    Route::post('query/status', 'PaymentController@getStatusPayment');
+});
+
+Route::group(['prefix' => '/v1/test/'], function () {
+    Route::get('connect', 'ConnectController@getConnection');
 });
