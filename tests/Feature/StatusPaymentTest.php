@@ -14,19 +14,19 @@ class StatusPaymentTest extends TestCase
     public function testGetStatus()
     {
         $data = [
-            'requesId'  => 121212
+            'requesId' => 121212
         ];
 
-        $rsp = $this->json('POST','/api/v1/pay/query/status',$data);
+        $rsp = $this->json('POST', '/api/v1/pay/query/status', $data);
 
         $rsp->assertStatus(200);
 
-        $rsp ->assertJson([
+        $rsp->assertJson([
             'success' => true,
             'error' => []
         ]);
 
-        $rsp ->assertJsonStructure([
+        $rsp->assertJsonStructure([
             'data',
             'success',
             'error'

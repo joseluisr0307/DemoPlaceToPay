@@ -20,7 +20,7 @@ class PaymentRecordTest extends TestCase
         /**
          * PODRÍA SER LA IDENTIFICACIÓN DE LA ORDEN DE PAGO
          */
-        $reference = substr(Uuid::uuid4(),0,30);
+        $reference = substr(Uuid::uuid4(), 0, 30);
 
         $newPayment['data'] = [
             'payment' => [
@@ -28,7 +28,7 @@ class PaymentRecordTest extends TestCase
                 'description' => 'Testing payment',
                 'amount' => [
                     'currency' => 'USD',
-                    'total' => mt_rand(15,120),
+                    'total' => mt_rand(15, 120),
                 ],
             ],
             'expiration' => date('c', strtotime(' + 2 days')),
@@ -37,11 +37,11 @@ class PaymentRecordTest extends TestCase
             'userAgent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36'
         ];
 
-        $rsp = $this->json('POST','/api/v1/pay/subscription',$newPayment);
+        $rsp = $this->json('POST', '/api/v1/pay/subscription', $newPayment);
 
         $rsp->assertStatus(200);
 
-        $rsp ->assertJson([
+        $rsp->assertJson([
             'success' => true,
             'error' => []
         ]);
@@ -49,10 +49,10 @@ class PaymentRecordTest extends TestCase
         $responseJson = json_decode($rsp->content());
 
         foreach ($responseJson->data as $key => $data) {
-            if ($key == 'url'){
+            if ($key == 'url') {
                 //Log::info('Test Registro', ['url' => $data]);
                 $this->assertDatabaseHas('payments', [
-                    'process_url' =>  $data->url
+                    'process_url' => $data->url
                 ]);
                 break;
             }
