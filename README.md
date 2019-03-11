@@ -27,7 +27,7 @@ Dentro del proyecto existe un command que se ejecuta cada 12 minutos con la func
 Por lo anterio, al momento de desplegar la aplicación en un servidor no olvidar habilitar la ejecución de los commands
 
 
-# Liks de documentación utilizada
+# Links de documentación utilizada
 
 https://vuejs.org/v2/guide/
 
