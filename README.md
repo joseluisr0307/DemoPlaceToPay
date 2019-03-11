@@ -4,8 +4,8 @@ Aplicación construida en laravel 5.5 y Vue 2.x para simular compras online medi
 
 # Que hace exactamente
 La aplicación cuenta con dos vistas:
-En la primera se permite al usuario conocer el estado de sus pagos mediante una tabla
-En la segunda se permite iniciar un proceso de pago mediante un formulario
+ En la primera se permite al usuario conocer el estado de sus pagos mediante una tabla
+ En la segunda se permite iniciar un proceso de pago mediante un formulario
 
 1. Cuando el usuario confirme la compra mediante la segunda vista se consume un servicio de PlaceToPay que registra el proceso de pago, a este se envían los datos que se tengan sobre el cliente, expiración (Fecha hasta que puede ser realizado el pago), URL de retorno y demás valores definidos posteriormente.
 2. Si la solicitud es correcta, el servicio retorna un identificador para la petición y una URL de procesamiento, la cual es utilizada para re direccionar al cliente y continuar con el proceso. En caso contrario, se indica el motivo de rechazo de la petición.
