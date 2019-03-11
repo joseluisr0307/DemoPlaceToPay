@@ -13,7 +13,7 @@ En la segunda se permite iniciar un proceso de pago mediante un formulario
 4. Cuando el usuario está de nuevo en la aplicación se toma el identificador enviado por PlaceToPlay en la URL para obtener el estado del pago y notificarle al usuario.
 
 
-#Como correr la aplicación 
+# Como correr la aplicación 
 
 Descargar el proyecto y por línea de comandos ejecutar lo siguiente
 ```
