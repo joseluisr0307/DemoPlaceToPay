@@ -1,6 +1,6 @@
 # Demo PlaceToPay
 
-Aplicación construida en laravel 5.5 y Vue 2.x para simular compras online mediante integración con la pasarela PlaceToPlay (Pago basico)
+Aplicación construida en laravel 5.5 y Vue 2.x para simular compras online mediante integración con la pasarela PlaceToPlay (Pago básico)
 
 # Que hace exactamente
 La aplicación cuenta con dos vistas:
