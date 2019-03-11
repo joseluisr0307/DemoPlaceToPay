@@ -19,11 +19,12 @@
     <body>
 
         <div id="app">
-            <example-component></example-component>
+            <index></index>
             @yield('content')
         </div>
     </body>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+
 </html>

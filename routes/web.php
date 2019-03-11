@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('/', function () {
+Route::get('/{reference?}', function () {
     return view('welcome');
 });
