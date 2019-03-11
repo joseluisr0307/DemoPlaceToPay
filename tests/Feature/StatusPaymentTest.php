@@ -14,7 +14,7 @@ class StatusPaymentTest extends TestCase
     public function testGetStatus()
     {
         $data = [
-            'requesId' => 121212
+            'reference' => 121212
         ];
 
         $rsp = $this->json('POST', '/api/v1/pay/query/status', $data);

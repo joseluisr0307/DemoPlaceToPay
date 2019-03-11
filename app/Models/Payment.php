@@ -10,4 +10,9 @@ class Payment extends Model
     use SoftDeletes;
 
     protected $table = 'payments';
+
+    public function state()
+    {
+        return $this->belongsTo('App\Models\Status', 'status_id');
+    }
 }

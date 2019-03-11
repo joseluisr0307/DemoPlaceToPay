@@ -21,6 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['prefix' => '/v1/pay/'], function () {
     Route::post('subscription', 'PaymentController@basicPayment');
     Route::post('query/status', 'PaymentController@getStatusPayment');
+    Route::get('records', 'PaymentController@payments');
 });
 
 Route::group(['prefix' => '/v1/test/'], function () {

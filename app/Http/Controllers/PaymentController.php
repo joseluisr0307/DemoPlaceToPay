@@ -6,6 +6,9 @@ use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Facades\URL;
+use Carbon\Carbon;
 
 class PaymentController extends Controller
 {
@@ -34,6 +37,14 @@ class PaymentController extends Controller
 
             $paymentData = $request->data;
 
+            /**
+             *  Se adiciona infomación que no es generada por el usuario y es necesaria para el registro del pago
+             */
+            $reference = substr(Uuid::uuid4(), 0, 30);
+            $paymentData['payment']['reference'] = $reference;
+            $paymentData['expiration'] = date('c', strtotime(' + 2 days'));
+            $paymentData['returnUrl'] = URL::to('/reference=' . $reference);
+
             //Log::info('Registro', ['Petición' => $paymentData]);
             /**
              * Si la solicitud es correcta, el servicio retorna un identificador para la petición (requestId) y
@@ -55,6 +66,10 @@ class PaymentController extends Controller
                 $payment = new Payment();
                 $payment->request_id = $result->requestId();
                 $payment->process_url = $result->processUrl();
+                $payment->reference = $reference;
+                $payment->description = $paymentData['payment']['description'];
+                $payment->total = $paymentData['payment']['amount']['total'];
+                $payment->currency = $paymentData['payment']['amount']['currency'];
                 $payment->save();
 
             } else {
@@ -98,13 +113,15 @@ class PaymentController extends Controller
         try {
 
             $placetopay = $this->connect();
-            $result = $placetopay->query($request->requestId);
+            $payment = Payment::where('reference', $request->reference)
+                ->first();
+
+            $result = $placetopay->query($payment->request_id);
 
             if ($result->isSuccessful()) {
                 // Inicializar transaccion
                 DB::beginTransaction();
-                $payment = Payment::where('request_id', $request->requestId)
-                    ->first();
+
                 //Log::info('Payment Info',['Successful' => $result]);
                 if ($result->status()->isApproved()) {
                     $payment->status_id = $approvedState;
@@ -133,6 +150,43 @@ class PaymentController extends Controller
         return \Response::json($response, 200);
     }
 
+
+    /**
+     * Cuando el usuario necesite conocer el estado de sus pagos realizados
+     *
+     * @return json
+     * @access public
+     */
+    public function payments()
+    {
+        $response = [
+            'data' => [],
+            'success' => false,
+            'error' => []
+        ];
+
+        try {
+            $payments = Payment::with('state')->get();
+
+            foreach ($payments as $payment) {
+                $status = $payment->state;
+                $response['data'][] = [
+                    'createdAt' => $payment->created_at->format('Y-m-d'),
+                    'status' => ($status !== null) ? ucfirst($status->name) : 'Desconocido',
+                    'reference' => ucfirst($payment->reference),
+                    'description' => ucfirst($payment->description),
+                    'total' => $payment->total,
+                    'currency' => strtoupper($payment->currency)
+                ];
+            }
+
+        } catch (Exception $e) {
+            Log::error('PaymentController@basicPayment', ['message' => $e->getMessage()]);
+            $response['error'][]['msg'] = $e->getMessage();
+        }
+        return \Response::json($response, 200);
+    }
+
     /**
      * Conectarse a PlaceToplay
      *
@@ -141,7 +195,6 @@ class PaymentController extends Controller
      */
     private function connect()
     {
-
         $conection = new ConnectController();
         return $conection->getConnection();
     }
