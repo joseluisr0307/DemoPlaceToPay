@@ -58,7 +58,7 @@ class StatusPaymentCommand extends Command
 
             if ($payments->count() > 0) {
 
-                $conection = new ConnectController();
+                $conection = ConnectController::singleton();
                 $placetopay = $conection->getConnection();
 
                 foreach ($payments as $payment) {

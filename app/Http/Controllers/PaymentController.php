@@ -195,7 +195,7 @@ class PaymentController extends Controller
      */
     private function connect()
     {
-        $conection = new ConnectController();
+        $conection = ConnectController::singleton();
         return $conection->getConnection();
     }
 
