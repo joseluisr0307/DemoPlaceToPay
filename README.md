@@ -15,17 +15,33 @@ La aplicación cuenta con dos vistas:
 
 # Como correr la aplicación 
 
-Descargar el proyecto y por línea de comandos ejecutar lo siguiente
+- Descargar el proyecto y por línea de comandos ejecutar lo siguiente
 ```
 composer install
 ```
 ```
 npm install
 ```
+- No olvidar correr las migraciones y los seeders
+```
+php artisan migrate
+```
+```
+composer dump-autoload
+```
+```
+php artisan db:seed
+```
+- Si se va a trabajar con PHPunit se recomienda montar una copia de la base de datos para no alterar la información. En la raíz del proyecto existe un archivo llamado phpunit.xml, dentro esta la etiqueta <php>, en esta se sobrescriben la variables del .env, aquí se está usando actualmente una base de datos exclusivamente para prueba y se llama placetopaytest, la credenciales de acceso y ubicación de esta base de datos son idénticas a la base de datos escrita en el .env por esta razón no se sobrescriben estos últimos campos
 
-Dentro del proyecto existe un command que se ejecuta cada 12 minutos con la funcionalidad de identificar el estado de pagos que se encuentran pendientes o que no se conoce el estado.
-Por lo anterio, al momento de desplegar la aplicación en un servidor no olvidar habilitar la ejecución de los commands
 
+- Dentro del proyecto existe un command que se ejecuta cada 12 minutos con la funcionalidad de identificar el estado de pagos que se encuentran pendientes o que no se conoce el estado. Por lo anterio, al momento de desplegar la aplicación en un servidor no olvidar habilitar la ejecución de los commands
+
+
+- Finalmente el .env ingresar los respectivos valores:
+- IDENTIFICATOR = tu_identificaro
+- SECRETKEY = tu_secret_key
+- ENDPOINT = el_punto_de_acceso
 
 # Links de documentación utilizada
 
