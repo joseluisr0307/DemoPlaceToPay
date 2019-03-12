@@ -54,7 +54,7 @@ class StatusPaymentCommand extends Command
 
             $payments = Payment::where('status_id', $processState)
                 ->orWhereNull('status_id')
-                ->get();
+                ->get(['id','request_id']);
 
             if ($payments->count() > 0) {
 

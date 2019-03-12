@@ -114,7 +114,7 @@ class PaymentController extends Controller
 
             $placetopay = $this->connect();
             $payment = Payment::where('reference', $request->reference)
-                ->first();
+                ->first(['id','request_id']);
 
             $result = $placetopay->query($payment->request_id);
 
@@ -166,7 +166,17 @@ class PaymentController extends Controller
         ];
 
         try {
-            $payments = Payment::with('state')->get();
+            $payments = Payment::with([
+                'state' => function ($query) {
+                $query->select('id', 'name');
+            }])->get([
+                'status_id',
+                'currency',
+                'total',
+                'reference',
+                'description',
+                'created_at'
+            ]);
 
             foreach ($payments as $payment) {
                 $status = $payment->state;
