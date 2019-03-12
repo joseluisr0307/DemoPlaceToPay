@@ -73,18 +73,6 @@
         },
         mounted() {
             var app = this;
-            axios
-                .get(
-                    "/api/v1/pay/records"
-                )
-                .then(function(resp) {
-                    app.payments = resp.data.data;
-                    console.log(resp.data.data);
-                })
-                .catch(function(resp) {
-                    console.log(resp.response.data);
-                    alert("No se pudo recuperar el historial de pagos");
-                });
 
             app.reference = window.location.href.split('=').pop();
 
@@ -104,6 +92,19 @@
                         alert("Error al consultar estado del último pago");
                     });
             }
+
+            axios
+                .get(
+                    "/api/v1/pay/records"
+                )
+                .then(function(resp) {
+                    app.payments = resp.data.data;
+                    console.log(resp.data.data);
+                })
+                .catch(function(resp) {
+                    console.log(resp.response.data);
+                    alert("No se pudo recuperar el historial de pagos");
+                });
 
         },
         methods: {
