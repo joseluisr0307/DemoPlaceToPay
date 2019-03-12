@@ -44857,13 +44857,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     mounted: function mounted() {
         var app = this;
-        axios.get("/api/v1/pay/records").then(function (resp) {
-            app.payments = resp.data.data;
-            console.log(resp.data.data);
-        }).catch(function (resp) {
-            console.log(resp.response.data);
-            alert("No se pudo recuperar el historial de pagos");
-        });
 
         app.reference = window.location.href.split('=').pop();
 
@@ -44878,6 +44871,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 alert("Error al consultar estado del último pago");
             });
         }
+
+        axios.get("/api/v1/pay/records").then(function (resp) {
+            app.payments = resp.data.data;
+            console.log(resp.data.data);
+        }).catch(function (resp) {
+            console.log(resp.response.data);
+            alert("No se pudo recuperar el historial de pagos");
+        });
     },
 
     methods: {
@@ -45665,7 +45666,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th", [_vm._v("Fecha")]),
+        _c("th", [_vm._v("Fecha (UTC)")]),
         _vm._v(" "),
         _c("th", [_vm._v("Descripción")]),
         _vm._v(" "),
